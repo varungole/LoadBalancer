@@ -42,14 +42,39 @@ public class Server {
                           "Content-Type: text/plain\r\n" +
                           "Content-Length: 35\r\n" +
                           "\r\n" +
-                          "This message is coming back from Server";
+                          "Response from server: HTTP/1.1 200 OK";
 
         out.write(response.getBytes());
         out.flush();
     }
 
     public static void main(String[] args) throws IOException {
-        Server server = new Server(8080);
-        server.start();
+        Server server1 = new Server(8080);
+        Server server2 = new Server(9090);
+        Server server3 = new Server(7070);
+        new Thread(() -> {
+            try {
+                server1.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();;
+
+        new Thread(() -> {
+            try {
+                server2.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+        new Thread(() -> {
+            try {
+                server3.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
+        
     }
 }
