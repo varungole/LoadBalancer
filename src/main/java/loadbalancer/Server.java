@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Server {
 
@@ -13,6 +15,10 @@ public class Server {
 
     public Server(int PORT) {
         this.PORT = PORT;
+    }
+
+    public Server() {
+
     }
 
     public void start() throws IOException {
@@ -42,39 +48,27 @@ public class Server {
                           "Content-Type: text/plain\r\n" +
                           "Content-Length: 35\r\n" +
                           "\r\n" +
-                          "Response from server: HTTP/1.1 200 OK";
+                          "Response from server: HTTP/1.1 200 OK" + plug.getPort();
 
         out.write(response.getBytes());
         out.flush();
     }
 
     public static void main(String[] args) throws IOException {
-        Server server1 = new Server(8080);
-        Server server2 = new Server(9090);
-        Server server3 = new Server(7070);
-        new Thread(() -> {
-            try {
-                server1.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();;
+      
+        List<Server> running = new ArrayList<>();
+        running.add(new Server(8080));
+        running.add(new Server(9090));
+        running.add(new Server(7070));
 
-        new Thread(() -> {
-            try {
-                server2.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-
-        new Thread(() -> {
-            try {
-                server3.start();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }).start();
-        
+        for(Server server : running) {
+            new Thread(() -> {
+                try {
+                    server.start();
+                } catch(IOException e) {
+                    e.getMessage();
+                }
+            }).start();
+        }
     }
 }
