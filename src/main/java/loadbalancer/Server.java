@@ -54,12 +54,15 @@ public class Server {
         out.flush();
     }
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
       
         List<Server> running = new ArrayList<>();
         running.add(new Server(8080));
         running.add(new Server(9090));
         running.add(new Server(7070));
+        running.add(new Server(9000));
+        running.add(new Server(9002));
+        running.add(new Server(9003));
 
         for(Server server : running) {
             new Thread(() -> {
@@ -70,5 +73,8 @@ public class Server {
                 }
             }).start();
         }
+
+        Thread.sleep(1000);
+
     }
 }

@@ -1,5 +1,5 @@
-for i in {1..3}
+for i in {1..100000}
 do
-  curl -s -X  GET http://localhost:1010 --data "Request $i"
+  curl -X GET http://localhost:1010 --data "Request $i"
   echo "Request $i sent"
 done
